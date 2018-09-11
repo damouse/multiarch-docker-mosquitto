@@ -1,5 +1,7 @@
 FROM arm64v8/ubuntu:16.04 as builder
 
+ARG  MOSQUITTOVERSION
+ENV  MOSQUITTOVERSION 1.4.14
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update   && \
