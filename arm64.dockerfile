@@ -25,12 +25,12 @@ RUN apt-get update && \
     apt-get install -y libssl1.0.0 libc-ares2 libuuid1 libwebsockets7 && \
     apt-get clean
 
-RUN mkdir -p /usr/local /mosquitto/config /mosquitto/data /mosquitto/log && \
+RUN mkdir -p /usr/local /mqtt/config /mqtt/data /mqtt/log && \
     useradd --system --no-create-home -s /usr/sbin/nologin -U mosquitto && \
-    chown -R mosquitto:mosquitto /mosquitto
+    chown -R mosquitto:mosquitto /mqtt
 
 COPY --from=builder /tmp/mosquitto/usr/local/ /usr/local/     
-COPY config /mosquitto/config
+COPY config /mqtt/config
 USER  mosquitto
 
 ENV PATH "$PATH:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -39,4 +39,4 @@ EXPOSE 1883 8833 9001
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["/usr/local/sbin/mosquitto", "-c", "/mosquitto/config/mosquitto.conf"]
+CMD ["/usr/local/sbin/mosquitto", "-c", "/mqtt/config/mosquitto.conf"]
