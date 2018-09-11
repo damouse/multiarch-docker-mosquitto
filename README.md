@@ -11,31 +11,28 @@ This broker does have websockets support via a websockets proxy, but not `libweb
 ## Building and Pushing
 
 ```
-cd common
-docker build . -t damouse/mosquitto:arm32v7
-docker push damouse/mosquitto:arm32v7
+docker build . -f armhf.dockerfile  -t damouse/mosquitto:armhf
+docker push damouse/mosquitto:armhf
 
-docker build . -t damouse/mosquitto:amd64
+docker build . -f amd64.dockerfile -t damouse/mosquitto:amd64
 docker push damouse/mosquitto:amd64
 
-docker build . -t -f arm64.dockerfile damouse/mosquitto:arm64
-docker push damouse/mosquitto:arm64
+docker build . -f arm64.dockerfile -t  damouse/mosquitto:arm64v8
+docker push damouse/mosquitto:arm64v8
 ```
-
-NOTE: I wasn't able to build `aarch64`, `arm64v8`, or `arm64` on my local ubuntu installation even after running the multi-arch steps detailed [here](https://www.ecliptik.com/Cross-Building-and-Running-Multi-Arch-Docker-Images/). Using `multiarch/ubuntu-core:arm64-xenial` built common, but I'm not sure if there are substantial differences between `ubuntu-core` and `ubuntu:16.04`.
 
 Creating the manifest for multi-arch files the first time: 
 
 ```
-$ docker manifest create damouse/python-common:latest damouse/python-common:arm32v7 damouse/python-common:amd64 damouse/python-common:arm64
+$ docker manifest create damouse/mosquitto:latest damouse/mosquitto:armhf damouse/mosquitto:amd64 damouse/mosquitto:arm64v8
 
-$ docker manifest annotate damouse/python-common:latest damouse/python-common:arm32v7 --os linux --arch arm
+$ docker manifest annotate damouse/mosquitto:latest damouse/mosquitto:armhf --os linux --arch arm
 
-$ docker manifest annotate damouse/python-common:latest damouse/python-common:amd64 --os linux --arch amd64
+$ docker manifest annotate damouse/mosquitto:latest damouse/mosquitto:amd64 --os linux --arch amd64
 
-$ docker manifest annotate damouse/python-common:latest damouse/python-common:arm64 --os linux --arch arm64
+$ docker manifest annotate damouse/mosquitto:latest damouse/mosquitto:arm64v8 --os linux --arch arm64v8
 
-$ docker manifest push damouse/python-common:latest
+$ docker manifest push damouse/mosquitto:latest
 ```
 
 ## Credits
